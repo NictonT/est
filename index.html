@@ -1,55 +1,123 @@
-// Configuration
-const CONFIG = {
-    // Google Docs published URL
-    docsUrl: 'https://docs.google.com/document/d/e/2PACX-1vTwkALtdtu63ywmjotmY_pDohbrq4AqaO4VgBR2nO_eFDGil7upciaDH-idDLZAphJ9MHEeptzpjlP6/pub',
-};
-
-// DOM Elements
-const elements = {
-    documentsContainer: document.getElementById('documentsContainer'),
-    loadingIndicator: document.getElementById('loadingIndicator')
-};
-
-// Initialize application
-document.addEventListener('DOMContentLoaded', () => {
-    displayDocument();
-});
-
-function displayDocument() {
-    showLoading(true);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Viewer</title>
     
-    // Create an iframe to display the Google Doc
-    elements.documentsContainer.innerHTML = `
-        <div class="document-container">
-            <iframe 
-                src="${CONFIG.docsUrl}?embedded=true" 
-                style="width: 100%; height: 800px; border: none; background: white;"
-                frameborder="0"
-                onload="hideLoading()"
-            ></iframe>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .document-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        #loadingIndicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none;
+        }
+
+        .alert {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <!-- Document Container -->
+        <div id="documentsContainer"></div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
-    `;
-}
+    </div>
 
-function showLoading(show) {
-    elements.loadingIndicator.style.display = show ? 'block' : 'none';
-}
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Inline JavaScript (since the main.js content was showing up in the body) -->
+    <script>
+        // Configuration
+        const CONFIG = {
+            // Google Docs published URL
+            docsUrl: 'https://docs.google.com/document/d/e/2PACX-1vTwkALtdtu63ywmjotmY_pDohbrq4AqaO4VgBR2nO_eFDGil7upciaDH-idDLZAphJ9MHEeptzpjlP6/pub'
+        };
 
-function hideLoading() {
-    showLoading(false);
-}
+        // DOM Elements
+        const elements = {
+            documentsContainer: document.getElementById('documentsContainer'),
+            loadingIndicator: document.getElementById('loadingIndicator')
+        };
 
-// Error handling
-window.onerror = function(msg, url, lineNo, columnNo, error) {
-    console.error('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + JSON.stringify(error));
-    showError('An error occurred while loading the document. Please try refreshing the page.');
-    return false;
-};
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', () => {
+            displayDocument();
+        });
 
-function showError(message) {
-    elements.documentsContainer.innerHTML = `
-        <div class="alert alert-danger">
-            <i class="fas fa-exclamation-circle me-2"></i>${message}
-        </div>
-    `;
-}
+        function displayDocument() {
+            showLoading(true);
+            
+            // Create an iframe to display the Google Doc
+            elements.documentsContainer.innerHTML = `
+                <div class="document-container">
+                    <iframe 
+                        src="${CONFIG.docsUrl}?embedded=true" 
+                        style="width: 100%; height: 800px; border: none; background: white;"
+                        frameborder="0"
+                        onload="hideLoading()"
+                    ></iframe>
+                </div>
+            `;
+        }
+
+        function showLoading(show) {
+            elements.loadingIndicator.style.display = show ? 'block' : 'none';
+        }
+
+        function hideLoading() {
+            showLoading(false);
+        }
+
+        // Error handling
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + JSON.stringify(error));
+            showError('An error occurred while loading the document. Please try refreshing the page.');
+            return false;
+        };
+
+        function showError(message) {
+            elements.documentsContainer.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>${message}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
